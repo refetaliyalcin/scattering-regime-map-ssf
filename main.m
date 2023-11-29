@@ -45,7 +45,7 @@ xticklabels({'10^{-4}','10^{-3}','10^{-2}','10^{-1}','0.75'})
 set(gca,'FontSize',13)
 box on
 saveas(gcf,['grid.png'])
-% saveas(gcf,['reduced_scat_coeff_ref.emf'])
+% saveas(gcf,['grid.emf'])
 saveas(gcf,['grid.fig'])
 
 
@@ -82,16 +82,16 @@ parfor i=1:length(xs)
 end
 toc
 
-Qsca_dep_reduced=Qsca_dep.*(1-g_dep);
-Qsca_ind_reduced=Qsca_ind.*(1-g_ind);
+Qsca_dep_transport=Qsca_dep.*(1-g_dep);
+Qsca_ind_transport=Qsca_ind.*(1-g_ind);
 
-red_error_monodisperse=100*abs(Qsca_ind_reduced - Qsca_dep_reduced)./Qsca_dep_reduced;
+tra_error_monodisperse=100*abs(Qsca_ind_transport - Qsca_dep_transport)./Qsca_dep_transport;
 error_monodisperse=100*abs(Qsca_ind - Qsca_dep)./Qsca_dep;
 g_err_monodisperse=(g_ind - g_dep);
 % g_err_monodisperse=100*abs(g_ssf-g_ssf(1,:))./g_ssf;
 
 figure('Renderer', 'painters', 'Position', [500 300 528 420]) % starting point and height - width of the frame
-contourf(f_v,xs,red_error_monodisperse,'edgecolor','none','LevelList',[0:0.1:5])
+contourf(f_v,xs,tra_error_monodisperse,'edgecolor','none','LevelList',[0:0.1:5])
 hAx=gca;
 caxis([0 5])
 a = colorbar;
@@ -104,7 +104,7 @@ xlabel('Volume fraction, f_v')
 colormap(jet)
 hold on
 % [C,h]=contour(f_v,xs,error_monodisperse',[1 2 3 5 10 20],"ShowText",true,'edgecolor','black');
-[C,h]=contour(f_v,xs,red_error_monodisperse,[1 3 5],"ShowText",true,'edgecolor','black');
+[C,h]=contour(f_v,xs,tra_error_monodisperse,[1 3 5],"ShowText",true,'edgecolor','black');
 set(gca,'XScale', 'log')
 set(gca,'YScale', 'log')
 ylabel('Size parameter, \chi')
@@ -133,9 +133,9 @@ t=text(1.25*10^-4,5*10^2,txt);
 t.FontSize = 13;
 t.Color = [1 1 1];
 
-saveas(gcf,['reduced_scat_coeff_ref.png'])
-% saveas(gcf,['reduced_scat_coeff_ref.emf'])
-saveas(gcf,['reduced_scat_coeff_ref.fig'])
+saveas(gcf,['transport_scat_coeff_ref.png'])
+% saveas(gcf,['transport_scat_coeff_ref.emf'])
+saveas(gcf,['transport_scat_coeff_ref.fig'])
 
 
 figure('Renderer', 'painters', 'Position', [500 300 528 420]) % starting point and height - width of the frame
