@@ -8,7 +8,7 @@ n_pigment=1.196;  %real refractive index of pigment
 k_pigment=0;  %imaginary refractive index of pigment
 n_medium = 1;
 nang=20000;
-no_of_f_v=50;
+no_of_f_v=100;
 no_of_xs=200;
 
 f_v=logspace(-4,log10(0.75),no_of_f_v);
@@ -231,4 +231,3 @@ t.Color = [1 1 1];
 saveas(gcf,['asymm.png'])
 % saveas(gcf,['asymm.emf'])
 saveas(gcf,['asymm.fig'])
-
