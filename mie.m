@@ -1,12 +1,10 @@
-function [Qsca,g,s1,s2] = mie(radius,lambda,n_medium,n_pigment,k_pigment,nang)
+function [Qsca,g,s1,s2] = mie(x0,n_medium,n_pigment,k_pigment,nang)
 
 % nang=1801; %discritization of scattering angle, for large size parameters (>1000) should be high (>50000) 
 
 %model 1 of Msichenko
 m1 = n_medium;
 m2 = n_pigment + 1i*k_pigment;
-
-x0=2*pi*radius/lambda; %size parameter at free-space
 
 mr = m2/m1;
 x = m1*x0;

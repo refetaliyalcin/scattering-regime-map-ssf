@@ -1,6 +1,6 @@
 clear all
 clc
-close all
+% close all
 
 set(0, 'DefaultLineLineWidth', 2); %set thickness of all the lines = 2
 
@@ -8,10 +8,9 @@ n_pigment=1.196;  %real refractive index of pigment
 k_pigment=0;  %imaginary refractive index of pigment
 n_medium = 1;
 nang=20000;
-no_of_f_v=100;
-no_of_xs=500;
+no_of_f_v=50;
+no_of_xs=200;
 
-lamda=0.5; %freespace wavelength of incident ray in meter
 f_v=logspace(-4,log10(0.75),no_of_f_v);
 xs = logspace(-2,3,no_of_xs)';
 teta=linspace(eps,pi,nang)';%don't start with zero to avoid division by zero
@@ -61,8 +60,6 @@ drolen_xs=[10^-2;drolen_xs];
 mishchenko_fv=[0.02,0.05,0.1,0.02,0.05,0.1]; %mishchenko's experiments
 mishchenko_x=[4.208,4.208,4.208,4.916,4.916,4.916];
 
-r_list = xs*lamda/(2*pi*n_medium);
-
 Qsca_ind = zeros(length(xs),1);
 g_ind = zeros(length(xs),1);
 Qsca_dep = zeros(length(xs),length(f_v));
@@ -70,15 +67,14 @@ g_dep = zeros(length(xs),length(f_v));
 
 tic
 parfor i=1:length(xs)
-    radius=r_list(i);
-    x_s=2*pi*n_medium*radius/lamda; %size parameter
-    [Qsca_ind(i),g_ind(i),S1,S2] = mie(radius,lamda,n_medium,n_pigment,k_pigment,nang);
+    x_0=xs(i)/n_medium; %size parameter
+    [Qsca_ind(i),g_ind(i),S1,S2] = mie(x_0,n_medium,n_pigment,k_pigment,nang);
     Qsca_dep_i= zeros(1,length(f_v));
     g_dep_i= zeros(1,length(f_v));
     for j=1:length(f_v)
         S11=0.5*(abs(S1).^2+abs(S2).^2)';
-        S=SSF_correction(f_v(j), teta, lamda/n_medium, radius);
-        Qsca_dep_i(j)=2*trapz(teta,sin(teta) .* S11 .* S)/abs(x_s)^2;
+        S=SSF_correction(f_v(j), teta, xs(i));
+        Qsca_dep_i(j)=2*trapz(teta,sin(teta) .* S11 .* S)/abs(xs(i))^2;
         g_dep_i(j)=trapz(teta,sin(teta) .*cos(teta) .* S11 .* S)/trapz(teta,sin(teta) .* S11 .* S);
     end
     Qsca_dep(i,:)=Qsca_dep_i;
